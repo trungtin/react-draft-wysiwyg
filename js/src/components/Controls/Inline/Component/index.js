@@ -3,7 +3,7 @@
 import React, { Component, PropTypes } from 'react';
 import classNames from 'classnames';
 
-import { getFirstIcon } from '../../../../utils/toolbar';
+import { getFirstConfig } from '../../../../utils/toolbar';
 import Option from '../../../Option';
 import { Dropdown, DropdownOption } from '../../../Dropdown';
 
@@ -38,10 +38,13 @@ export default class Inline extends Component {
                 (style === 'MONOSPACE' && currentState['CODE'])
               }
             >
-              <img
-                alt=""
-                src={config[style].icon}
-              />
+              {config[style].iconRenderer ?
+                config[style].iconRenderer() :
+                <img
+                  alt=""
+                  src={config[style].icon}
+                />
+              }
             </Option>
           )
         }
@@ -60,6 +63,7 @@ export default class Inline extends Component {
       onChange,
     } = this.props;
     const { className, dropdownClassName } = config;
+    const firstConfig = getFirstConfig(config)
     return (
       <Dropdown
         className={classNames('rdw-inline-dropdown', className)}
@@ -71,10 +75,13 @@ export default class Inline extends Component {
         onExpandEvent={onExpandEvent}
         aria-label="rdw-inline-control"
       >
-        <img
-          src={getFirstIcon(config)}
-          alt=""
-        />
+        {firstConfig.iconRenderer ?
+          firstConfig.iconRenderer() :
+          <img
+            src={firstConfig}
+            alt=""
+          />
+        }
         {
           config.options
           .map((style, index) =>
@@ -87,10 +94,13 @@ export default class Inline extends Component {
                 (style === 'MONOSPACE' && currentState['CODE'])
               }
             >
-              <img
-                src={config[style].icon}
-                alt=""
-              />
+              {config[style].iconRenderer ?
+                config[style].iconRenderer() :
+                <img
+                  src={config[style].icon}
+                  alt=""
+                />
+              }
             </DropdownOption>)
           }
       </Dropdown>

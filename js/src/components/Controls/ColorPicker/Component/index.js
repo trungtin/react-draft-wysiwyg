@@ -100,7 +100,7 @@ class LayoutComponent extends Component {
   };
 
   render(): Object {
-    const { config: { icon, className }, expanded, onExpandEvent } = this.props;
+    const { config: { icon, className, iconRenderer }, expanded, onExpandEvent } = this.props;
     return (
       <div
         className="rdw-colorpicker-wrapper"
@@ -112,10 +112,13 @@ class LayoutComponent extends Component {
           onClick={onExpandEvent}
           className={classNames(className)}
         >
-          <img
-            src={icon}
-            alt=""
-          />
+          {iconRenderer ?
+            iconRenderer() :
+            <img
+              src={icon}
+              alt=""
+            />
+          }
         </Option>
         {expanded ? this.renderModal() : undefined}
       </div>

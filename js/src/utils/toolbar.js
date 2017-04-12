@@ -6,7 +6,7 @@ import { forEach, isMap } from './common';
 * This function is used when displaying options in drop-down.
 * Icon for first available options is used in drop-down placeholder.
 */
-const getFirstIcon = config => config[config.options[0]].icon;
+const getFirstConfig = config => config[config.options[0]];
 
 /**
 * The function is used to recursively merge toolbar options.
@@ -29,7 +29,7 @@ const mergeRecursive = (obj1, obj2) => {
 };
 
 module.exports = {
-  getFirstIcon,
+  getFirstConfig,
   mergeRecursive,
 };
 

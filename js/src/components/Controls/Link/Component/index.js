@@ -4,7 +4,7 @@ import React, { Component, PropTypes } from 'react';
 import classNames from 'classnames';
 
 import { stopPropagation } from '../../../../utils/common';
-import { getFirstIcon } from '../../../../utils/toolbar';
+import { getFirstConfig } from '../../../../utils/toolbar';
 import Option from '../../../Option';
 import { Dropdown, DropdownOption } from '../../../Dropdown';
 import styles from './styles.css'; // eslint-disable-line no-unused-vars
@@ -146,10 +146,13 @@ class LayoutComponent extends Component {
           aria-haspopup="true"
           aria-expanded={showModal}
         >
-          <img
-            src={link.icon}
-            alt=""
-          />
+          {link.iconRenderer ?
+            link.iconRenderer() :
+            <img
+              src={link.icon}
+              alt=""
+            />
+          }
         </Option>}
         {options.indexOf('unlink') >= 0 && <Option
           disabled={!currentState.link}
@@ -157,10 +160,13 @@ class LayoutComponent extends Component {
           className={classNames(unlink.className)}
           onClick={this.removeLink}
         >
-          <img
-            src={unlink.icon}
-            alt=""
-          />
+          {unlink.iconRenderer ?
+            unlink.iconRenderer() :
+            <img
+              src={unlink.icon}
+              alt=""
+            />
+          }
         </Option>}
         {expanded && showModal ? this.renderAddLinkModal() : undefined}
       </div>
@@ -179,6 +185,7 @@ class LayoutComponent extends Component {
     } = this.props;
     const { options, link, unlink, className, dropdownClassName } = config;
     const { showModal } = this.state;
+    const firstConfig = getFirstConfig(config)
     return (
       <div
         className="rdw-link-wrapper"
@@ -195,28 +202,37 @@ class LayoutComponent extends Component {
           doCollapse={doCollapse}
           onExpandEvent={onExpandEvent}
         >
-          <img
-            src={getFirstIcon(config)}
-            alt=""
-          />
+          {firstConfig.iconRenderer ?
+            firstConfig.iconRenderer() :
+            <img
+              src={firstConfig.icon}
+              alt=""
+            />
+          }
           {options.indexOf('link') >= 0 && <DropdownOption
             onClick={this.forceExpandAndShowModal}
             className={classNames('rdw-link-dropdownoption', link.className)}
           >
-            <img
-              src={link.icon}
-              alt=""
-            />
+            {link.iconRenderer ?
+              link.iconRenderer() :
+              <img
+                src={link.icon}
+                alt=""
+              />
+            }
           </DropdownOption>}
           {options.indexOf('unlink') >= 0 && <DropdownOption
             onClick={this.removeLink}
             disabled={!currentState.link}
             className={classNames('rdw-link-dropdownoption', unlink.className)}
           >
-            <img
-              src={unlink.icon}
-              alt=""
-            />
+            {unlink.iconRenderer ?
+              unlink.iconRenderer() :
+              <img
+                src={unlink.icon}
+                alt=""
+              />
+            }
           </DropdownOption>}
         </Dropdown>
         {expanded && showModal ? this.renderAddLinkModal() : undefined}

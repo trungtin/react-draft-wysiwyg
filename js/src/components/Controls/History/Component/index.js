@@ -3,7 +3,7 @@
 import React, { Component, PropTypes } from 'react';
 import classNames from 'classnames';
 
-import { getFirstIcon } from '../../../../utils/toolbar';
+import { getFirstConfig } from '../../../../utils/toolbar';
 import Option from '../../../Option';
 import { Dropdown, DropdownOption } from '../../../Dropdown';
 import styles from './styles.css'; // eslint-disable-line no-unused-vars
@@ -35,6 +35,7 @@ export default class History extends Component {
       currentState : { undoDisabled, redoDisabled },
     } = this.props;
     const {options, undo, redo, className, dropdownClassName} = config;
+    const firstConfig = getFirstConfig(config)
     return (
       <Dropdown
         className={classNames('rdw-history-dropdown', className)}
@@ -45,20 +46,26 @@ export default class History extends Component {
         onExpandEvent={onExpandEvent}
         aria-label="rdw-history-control"
       >
-        <img
-          src={getFirstIcon(config)}
-          alt=""
-        />
+        {firstConfig.iconRenderer ?
+          firstConfig.iconRenderer() :
+          <img
+            src={firstConfig.icon}
+            alt=""
+          />
+        }
         {options.indexOf('undo') >= 0 && <DropdownOption
           value="undo"
           onClick={this.onChange}
           disabled={undoDisabled}
           className={classNames('rdw-history-dropdownoption', undo.className)}
         >
-          <img
-            src={undo.icon}
-            alt=""
-          />
+          {undo.iconRenderer ?
+            undo.iconRenderer() :
+            <img
+              src={undo.icon}
+              alt=""
+            />
+          }
         </DropdownOption>}
         {options.indexOf('redo') >= 0 && <DropdownOption
           value="redo"
@@ -66,10 +73,13 @@ export default class History extends Component {
           disabled={redoDisabled}
           className={classNames('rdw-history-dropdownoption', redo.className)}
         >
-          <img
-            src={redo.icon}
-            alt=""
-          />
+          {redo.iconRenderer ?
+            redo.iconRenderer() :
+            <img
+              src={redo.icon}
+              alt=""
+            />
+          }
         </DropdownOption>}
       </Dropdown>
     );
@@ -88,10 +98,13 @@ export default class History extends Component {
           className={classNames(undo.className)}
           disabled={undoDisabled}
         >
-          <img
-            src={undo.icon}
-            alt=""
-          />
+          {undo.iconRenderer ?
+            undo.iconRenderer() :
+            <img
+              src={undo.icon}
+              alt=""
+            />
+          }
         </Option>}
         {options.indexOf('redo') >= 0 && <Option
           value="redo"
@@ -99,10 +112,13 @@ export default class History extends Component {
           className={classNames(redo.className)}
           disabled={redoDisabled}
         >
-          <img
-            src={redo.icon}
-            alt=""
-          />
+          {redo.iconRenderer ?
+            redo.iconRenderer() :
+            <img
+              src={redo.icon}
+              alt=""
+            />
+          }
         </Option>}
       </div>
     );

@@ -36,7 +36,7 @@ export default class LayoutComponent extends Component {
 
   render() {
     const {
-      config: { icon, className, dropdownClassName, options },
+      config: { icon, className, dropdownClassName, options, iconRenderer },
       translations,
       onChange,
       expanded,
@@ -60,13 +60,17 @@ export default class LayoutComponent extends Component {
           doCollapse={doCollapse}
           onExpandEvent={onExpandEvent}
         >
-          {currentFontSize ?
-            <span>{currentFontSize}</span>
-          :
-            <img
-              src={icon}
-              alt=""
-            />
+          {iconRenderer ?
+            iconRenderer(currentFontSize || null) :
+            (
+              currentFontSize ?
+                <span>{currentFontSize}</span>
+              :
+              <img
+                src={icon}
+                alt=""
+              />
+            )
           }
           {
             options.map((size, index) =>

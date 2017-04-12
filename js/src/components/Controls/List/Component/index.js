@@ -3,7 +3,7 @@
 import React, { Component, PropTypes } from 'react';
 import classNames from 'classnames';
 
-import { getFirstIcon } from '../../../../utils/toolbar';
+import { getFirstConfig } from '../../../../utils/toolbar';
 import { Dropdown, DropdownOption } from '../../../Dropdown';
 import Option from '../../../Option';
 import styles from './styles.css'; // eslint-disable-line no-unused-vars
@@ -50,10 +50,13 @@ export default class LayoutComponent extends Component {
           className={classNames(unordered.className)}
           active={listType === 'unordered'}
         >
-          <img
-            src={unordered.icon}
-            alt=""
-          />
+          {unordered.iconRenderer ?
+            unordered.iconRenderer() :
+            <img
+              src={unordered.icon}
+              alt=""
+            />
+          }
         </Option>}
         {options.indexOf('ordered') >= 0 && <Option
           value="ordered"
@@ -61,28 +64,37 @@ export default class LayoutComponent extends Component {
           className={classNames(ordered.className)}
           active={listType === 'ordered'}
         >
-          <img
-            src={ordered.icon}
-            alt=""
-          />
+          {ordered.iconRenderer ?
+            ordered.iconRenderer() :
+            <img
+              src={ordered.icon}
+              alt=""
+            />
+          }
         </Option>}
         {options.indexOf('indent') >= 0 && <Option
           onClick={this.indent}
           className={classNames(indent.className)}
         >
-          <img
-            src={indent.icon}
-            alt=""
-          />
+          {indent.iconRenderer ?
+            indent.iconRenderer() :
+            <img
+              src={indent.icon}
+              alt=""
+            />
+          }
         </Option>}
         {options.indexOf('outdent') >= 0 && <Option
           onClick={this.outdent}
           className={classNames(outdent.className)}
         >
-          <img
-            src={outdent.icon}
-            alt=""
-          />
+          {outdent.iconRenderer ?
+            outdent.iconRenderer() :
+            <img
+              src={outdent.icon}
+              alt=""
+            />
+          }
         </Option>}
       </div>
     );
@@ -91,6 +103,7 @@ export default class LayoutComponent extends Component {
   renderInDropDown(): Object {
     const { config, expanded, doCollapse, doExpand, onExpandEvent, onChange, currentState: { listType } } = this.props;
     const { options, className, dropdownClassName } = config;
+    const firstConfig = getFirstConfig(config)
     return (
       <Dropdown
         className={classNames('rdw-list-dropdown', className)}
@@ -102,10 +115,13 @@ export default class LayoutComponent extends Component {
         onExpandEvent={onExpandEvent}
         aria-label="rdw-list-control"
       >
-        <img
-          src={getFirstIcon(config)}
-          alt=""
-        />
+        {firstConfig.iconRenderer ?
+          firstConfig.iconRenderer() :
+          <img
+            src={firstConfig.icon}
+            alt=""
+          />
+        }
         { this.options
           .filter(option => options.indexOf(option) >= 0)
           .map((option, index) => (<DropdownOption
@@ -114,10 +130,13 @@ export default class LayoutComponent extends Component {
             className={classNames('rdw-list-dropdownOption', config[option].className)}
             active={listType === option}
           >
-            <img
-              src={config[option].icon}
-              alt=""
-            />
+            {config[option].iconRenderer ?
+              config[option].iconRenderer() :
+              <img
+                src={config[option].icon}
+                alt=""
+              />
+            }
           </DropdownOption>))
         }
       </Dropdown>

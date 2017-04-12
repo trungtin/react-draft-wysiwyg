@@ -41,7 +41,7 @@ class LayoutComponent extends Component {
   }
 
   render(): Object {
-    const { config: { icon, className }, expanded, onExpandEvent } = this.props;
+    const { config: { icon, className, iconRenderer }, expanded, onExpandEvent } = this.props;
     return (
       <div
         className="rdw-emoji-wrapper"
@@ -54,10 +54,13 @@ class LayoutComponent extends Component {
           value="unordered-list-item"
           onClick={onExpandEvent}
         >
-          <img
-            src={icon}
-            alt=""
-          />
+          {iconRenderer ?
+            iconRenderer() :
+            <img
+              src={icon}
+              alt=""
+            />
+          }
         </Option>
         {expanded ? this.renderEmojiModal() : undefined}
       </div>
